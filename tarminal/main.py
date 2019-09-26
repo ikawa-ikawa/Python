@@ -78,7 +78,13 @@ per_mem = 0
 per_cpu = 0
 
 
+#画像
+draw_cpu = 0
+draw_mem = 0
 
+path_anime_cnt_yukari = 0
+path_anime_cnt_kaede = 0
+path_anime_cnt_kurumi = 0
 
 
 
@@ -100,6 +106,16 @@ class MyApp(wx.Frame):
         
         global font
         global thread_cpu
+        global c_cpu
+        global c_mem
+        global c_tarm
+        global yukari_path
+        global kaede_path
+        global kurumi_path
+        global yukari_path_null
+        global kaede_path_null
+        global kurumi_path_null
+
         
         font = wx.Font(12, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL)
         
@@ -114,11 +130,9 @@ class MyApp(wx.Frame):
         self.panel_tarm_1 = wx.Panel(self, -1, pos=(10, 10), size=(625, 400))
         self.panel_tarm_2 = wx.Panel(self, -1, pos=(645, 10), size =(625, 400))
         self.panel_tarm_3 = wx.Panel(self, -1, pos=(10, 420), size =(625, 400))
-        self.panel_tarm_4 = wx.Panel(self, -1, pos=(645, 420), size =(625, 400))
         self.panel_tarm_1.SetBackgroundColour( (30, 30, 30) )
         self.panel_tarm_2.SetBackgroundColour( (30, 30, 30) )
         self.panel_tarm_3.SetBackgroundColour( (30, 30, 30) )
-        self.panel_tarm_4.SetBackgroundColour( (30, 30, 30) )
 
         self.text_1 = wx.StaticText(self.panel_tarm_1, -1, "", pos=(x_yukari, y_yukari))
         self.text_1.SetFont(font)
@@ -129,15 +143,13 @@ class MyApp(wx.Frame):
         self.text_3 = wx.StaticText(self.panel_tarm_3, -1, "", pos=(x_kurumi, y_kurumi))
         self.text_3.SetFont(font)
         self.text_3.SetForegroundColour("#00FF00")
-        self.text_4 = wx.StaticText(self.panel_tarm_4, -1, "", pos=(50, 50))
-        self.text_4.SetFont(font)
-        self.text_4.SetForegroundColour("#00FF00")
+
         
         self.Show(True)
        
     
         #入力ボックス
-        self.TextBox = wx.TextCtrl(self, -1, size = (200, -1), pos=(645, 420), style = wx.TE_PROCESS_ENTER)
+        self.TextBox = wx.TextCtrl(self, -1, size = (630, -1), pos=(645, 765), style = wx.TE_PROCESS_ENTER)
         self.TextBox.SetForegroundColour("#00FF00")
         self.TextBox.SetBackgroundColour("#000000")
         self.TextBox.SetFont(font)
@@ -145,7 +157,81 @@ class MyApp(wx.Frame):
         self.TextBox.Bind(wx.EVT_TEXT_ENTER, self.OnTextEnter)
         self.TextBox.Bind(wx.EVT_CHAR_HOOK, self.onKey)
         
+        #画像
+        image = wx.Image("img/circle_base.png")
+        bitmap = image.ConvertToBitmap()
+        wx.StaticBitmap(self, -1, bitmap, pos = ( 645, 420 ), size = image.GetSize() )
         
+        image = wx.Image("img/circle_tarm_base.png")
+        bitmap = image.ConvertToBitmap()
+        wx.StaticBitmap(self, -1, bitmap, pos = ( 645, 420 ), size = image.GetSize() )
+        
+        image = wx.Image("img/circle_cpu_0.png")
+        c_cpu = image.ConvertToBitmap()
+        self.c_cpu = wx.StaticBitmap(self, -1, c_cpu, pos = ( 645, 420 ), size = image.GetSize() )
+        
+        image = wx.Image("img/circle_mem_0.png")
+        c_mem = image.ConvertToBitmap()
+        self.c_mem = wx.StaticBitmap(self, -1, c_mem, pos = ( 645, 420 ), size = image.GetSize() )
+        
+        image = wx.Image("img/circle_tarm_yukari.png")
+        c_tarm = image.ConvertToBitmap()
+        self.c_tarm = wx.StaticBitmap(self, -1, c_tarm, pos = ( 645, 420 ), size = image.GetSize() )
+        
+        
+        image = wx.Image("img/path_base.png")
+        bitmap = image.ConvertToBitmap()
+        wx.StaticBitmap(self, -1, bitmap, pos = ( 870, 420 ), size = image.GetSize() )
+        
+        image = wx.Image("img/path_base.png")
+        bitmap = image.ConvertToBitmap()
+        wx.StaticBitmap(self, -1, bitmap, pos = ( 920, 454 ), size = image.GetSize() )
+
+        image = wx.Image("img/path_base.png")
+        bitmap = image.ConvertToBitmap()
+        wx.StaticBitmap(self, -1, bitmap, pos = ( 950, 490 ), size = image.GetSize() )
+        
+        
+        image = wx.Image("img/path_null.png")
+        yukari_path_null = image.ConvertToBitmap()
+        self.yukari_path_null = wx.StaticBitmap(self, -1, yukari_path_null, pos = ( 870, 420 ), size = image.GetSize() )
+        
+        image = wx.Image("img/path_null.png")
+        kaede_path_null = image.ConvertToBitmap()
+        self.kaede_path_null = wx.StaticBitmap(self, -1, kaede_path_null, pos = ( 920, 454 ), size = image.GetSize() )
+        
+        image = wx.Image("img/path_null.png")
+        kurumi_path_null = image.ConvertToBitmap()
+        self.kurumi_path_null = wx.StaticBitmap(self, -1, kurumi_path_null, pos = ( 950, 490 ), size = image.GetSize() )
+        
+        
+
+        image = wx.Image("img/path_0.png")
+        yukari_path = image.ConvertToBitmap()
+        self.yukari_path = wx.StaticBitmap(self, -1, yukari_path, pos = ( 870, 420 ), size = image.GetSize() )
+
+        image = wx.Image("img/path_0.png")
+        kaede_path = image.ConvertToBitmap()
+        self.kaede_path = wx.StaticBitmap(self, -1, kaede_path, pos = ( 920, 454 ), size = image.GetSize() )
+        
+        image = wx.Image("img/path_0.png")
+        kurumi_path = image.ConvertToBitmap()
+        self.kurumi_path = wx.StaticBitmap(self, -1, kurumi_path, pos = ( 950, 490 ), size = image.GetSize() )
+
+
+        #パスを常に表示
+        self.text_yukari_path = wx.StaticText(self, -1, path_yukari, pos=(1005, 425))
+        self.text_yukari_path.SetFont(font)
+        self.text_yukari_path.SetForegroundColour("#00FF00")
+        
+        self.text_kaede_path = wx.StaticText(self, -1, path_kaede, pos=(1055, 459))
+        self.text_kaede_path.SetFont(font)
+        self.text_kaede_path.SetForegroundColour("#00FF00")
+        
+        self.text_kurumi_path = wx.StaticText(self, -1, path_kurumi, pos=(1085, 495))
+        self.text_kurumi_path.SetFont(font)
+        self.text_kurumi_path.SetForegroundColour("#00FF00")
+
         #タイマー
         self.timer = wx.Timer(self)
         self.Bind(wx.EVT_TIMER, self.anime)
@@ -157,6 +243,8 @@ class MyApp(wx.Frame):
     
         #スレッド(CPU使用率取得)
         thread_cpu.start()
+    
+
     
     #　閉じるボタンを押した時の処理
     def frame_close( self, event ):
@@ -190,6 +278,8 @@ class MyApp(wx.Frame):
     def anime(self, event):
         global font
         
+        global active_tarm
+        
         global y_yukari
         global y_kurumi
         global y_kaede
@@ -215,6 +305,26 @@ class MyApp(wx.Frame):
         
         global per_mem
         global per_cpu
+        
+        global draw_cpu
+        global draw_mem
+        
+        global c_cpu
+        global c_mem
+        global c_tarm
+        
+        global yukari_path
+        global kaede_path
+        global kurumi_path
+        global yukari_path_null
+        global kaede_path_null
+        global kurumi_path_null
+        
+        global path_anime_cnt_yukari
+        global path_anime_cnt_kaede
+        global path_anime_cnt_kurumi
+        
+
 
         #ターミナル文字表示
         output_yukari = ""
@@ -232,11 +342,52 @@ class MyApp(wx.Frame):
         self.text_1.SetLabel(output_yukari)
         self.text_2.SetLabel(output_kaede)
         self.text_3.SetLabel(output_kurumi)
-        self.text_4.SetLabel("メモリ：" + str(per_mem) + "％" + "\n" + "ＣＰＵ：" + str(per_cpu) + "％")
+        
+        #パスアニメのカウントアップ
+        if active_tarm == "yukari" :  path_anime_cnt_yukari = path_anime_cnt_yukari + 1
+        if active_tarm == "kaede" :  path_anime_cnt_kaede = path_anime_cnt_kaede + 1
+        if active_tarm == "kurumi" :  path_anime_cnt_kurumi = path_anime_cnt_kurumi + 1
+        
+        if path_anime_cnt_yukari >= 10 or path_anime_cnt_kaede >= 10 or path_anime_cnt_kurumi >= 10:
+            path_anime_cnt_yukari = 0
+            path_anime_cnt_kaede = 0
+            path_anime_cnt_kurumi = 0
+        
+
+        #画像系
+        n_cpu = int((per_cpu - int(per_cpu)) * 10)
+        n_mem = int((per_mem - int(per_mem)) * 10)
+        
+        if n_cpu == draw_cpu:
+            pass
+        elif n_cpu > draw_cpu:
+            draw_cpu = draw_cpu + 1
+        else:
+            draw_cpu = draw_cpu - 1
+        
+        if n_mem == draw_mem:
+            pass
+        elif n_mem > draw_mem:
+            draw_mem = draw_mem + 1
+        else:
+            draw_mem = draw_mem - 1
+
+        #CPU，MEMアニメ
+        self.c_cpu.SetBitmap(wx.Bitmap("img/circle_cpu_" + str(draw_cpu) + ".png"))
+        self.c_mem.SetBitmap(wx.Bitmap("img/circle_mem_" + str(draw_mem) + ".png"))
+        
+        #アクティブターミナル
+        if active_tarm == "yukari" : self.c_tarm.SetBitmap(wx.Bitmap("img/circle_tarm_yukari.png"))
+        if active_tarm == "kaede" : self.c_tarm.SetBitmap(wx.Bitmap("img/circle_tarm_kaede.png"))
+        if active_tarm == "kurumi" : self.c_tarm.SetBitmap(wx.Bitmap("img/circle_tarm_kurumi.png"))
+
+        #パスアニメ
+        self.yukari_path.SetBitmap(wx.Bitmap("img/path_" + str(path_anime_cnt_yukari) + ".png"))
+        self.kaede_path.SetBitmap(wx.Bitmap("img/path_" + str(path_anime_cnt_kaede) + ".png"))
+        self.kurumi_path.SetBitmap(wx.Bitmap("img/path_" + str(path_anime_cnt_kurumi) + ".png"))
 
 
-    
-    
+
     #上下キーが押された時の処理
     def onKey(self, event):
     
@@ -294,6 +445,9 @@ class MyApp(wx.Frame):
         global page_kaede
         global page_kurumi
         global flag_exit
+        global path_anime_cnt_yukari
+        global path_anime_cnt_kaede
+        global path_anime_cnt_kurumi
 
         #インプットリストに追加
         inp.append( self.TextBox.GetValue() )
@@ -307,18 +461,28 @@ class MyApp(wx.Frame):
         
         self.printbar(active_tarm)
         
+        
         #アクティブコマンド
         if inp[-1] == "active yukari" or inp[-1] == "on yukari" or inp[-1] == "active 1" or inp[-1] == "on 1":
             active_tarm = "yukari"
             self.printf(active_tarm, "Activate Yukari")
+            path_anime_cnt_yukari = 0
+            path_anime_cnt_kaede = 0
+            path_anime_cnt_kurumi = 0
         
         if inp[-1] == "active kaede" or inp[-1] == "on kaede" or inp[-1] == "active 2" or inp[-1] == "on 2":
             active_tarm = "kaede"
             self.printf(active_tarm, "Activate Kaede")
+            path_anime_cnt_yukari = 0
+            path_anime_cnt_kaede = 0
+            path_anime_cnt_kurumi = 0
         
         if inp[-1] == "active kurumi" or inp[-1] == "on kurumi" or inp[-1] == "active 3" or inp[-1] == "on 3":
             active_tarm = "kurumi"
             self.printf(active_tarm, "Activate Kurumi")
+            path_anime_cnt_yukari = 0
+            path_anime_cnt_kaede = 0
+            path_anime_cnt_kurumi = 0
         
         #exitコマンド
         if inp[-1] == "exit":
@@ -361,8 +525,6 @@ class MyApp(wx.Frame):
                 self.printf("kurumi", "running thread")
                     
                     
-
-
 
 
 
@@ -585,7 +747,10 @@ class MyApp(wx.Frame):
 
 
 
-
+        #パスの中身を表示
+        self.text_yukari_path.SetLabel(path_yukari)
+        self.text_kaede_path.SetLabel(path_kaede)
+        self.text_kurumi_path.SetLabel(path_kurumi)
 
 
     def printf(self, tarm_name, x):
