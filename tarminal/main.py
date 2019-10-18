@@ -7,7 +7,7 @@ import time         #時間（タイマー）
 import threading    #スレッド
 import subprocess   #サブプロセス
 import os           #OS
-import re           #なんだっけこれ
+import re           #正規表現
 import datetime     #時間（日時）
 import shlex        #なんだっけこれ
 import psutil       #CPU使用率とか
@@ -90,10 +90,6 @@ path_anime_cnt_kurumi = 0
 
 
 
-
-
-
-
 class MyApp(wx.Frame):
 
     def __init__( self, *args, **kw ):
@@ -115,6 +111,25 @@ class MyApp(wx.Frame):
         global yukari_path_null
         global kaede_path_null
         global kurumi_path_null
+        
+        global yukari_page_1
+        global yukari_page_10
+        global yukari_page_100
+        global yukari_page_down_1
+        global yukari_page_down_10
+        global yukari_page_down_100
+        global kaede_page_1
+        global kaede_page_10
+        global kaede_page_100
+        global kaede_page_down_1
+        global kaede_page_down_10
+        global kaede_page_down_100
+        global kurumi_page_1
+        global kurumi_page_10
+        global kurumi_page_100
+        global kurumi_page_down_1
+        global kurumi_page_down_10
+        global kurumi_page_down_100
 
         
         font = wx.Font(12, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL)
@@ -192,6 +207,99 @@ class MyApp(wx.Frame):
         wx.StaticBitmap(self, -1, bitmap, pos = ( 950, 490 ), size = image.GetSize() )
         
         
+        #ページ番号
+        image = wx.Image("img/page_base.png")
+        bitmap = image.ConvertToBitmap()
+        wx.StaticBitmap(self, -1, bitmap, pos = (1030, 550), size = image.GetSize() )
+        
+        image = wx.Image("img/page_base.png")
+        bitmap = image.ConvertToBitmap()
+        wx.StaticBitmap(self, -1, bitmap, pos = (1110, 550), size = image.GetSize() )
+        
+        image = wx.Image("img/page_base.png")
+        bitmap = image.ConvertToBitmap()
+        wx.StaticBitmap(self, -1, bitmap, pos = (1190, 550), size = image.GetSize() )
+        
+        
+        image = wx.Image("img/number_0.png")
+        yukari_page_100 = image.ConvertToBitmap()
+        self.yukari_page_100 = wx.StaticBitmap(self, -1, yukari_page_100, pos = (1040, 575), size = image.GetSize() )
+        
+        image = wx.Image("img/number_0.png")
+        yukari_page_10 = image.ConvertToBitmap()
+        self.yukari_page_10 = wx.StaticBitmap(self, -1, yukari_page_10, pos = (1055, 575), size = image.GetSize() )
+        
+        image = wx.Image("img/number_1.png")
+        yukari_page_1 = image.ConvertToBitmap()
+        self.yukari_page_1 = wx.StaticBitmap(self, -1, yukari_page_1, pos = (1070, 575), size = image.GetSize() )
+        
+        image = wx.Image("img/number_0.png")
+        yukari_page_down_100 = image.ConvertToBitmap()
+        self.yukari_page_down_100 = wx.StaticBitmap(self, -1, yukari_page_down_100, pos = (1040, 605), size = image.GetSize() )
+        
+        image = wx.Image("img/number_0.png")
+        yukari_page_down_10 = image.ConvertToBitmap()
+        self.yukari_page_down_10 = wx.StaticBitmap(self, -1, yukari_page_down_10, pos = (1055, 605), size = image.GetSize() )
+        
+        image = wx.Image("img/number_1.png")
+        yukari_page_down_1 = image.ConvertToBitmap()
+        self.yukari_page_down_1 = wx.StaticBitmap(self, -1, yukari_page_down_1, pos = (1070, 605), size = image.GetSize() )
+        
+        
+        image = wx.Image("img/number_0.png")
+        kaede_page_100 = image.ConvertToBitmap()
+        self.kaede_page_100 = wx.StaticBitmap(self, -1, kaede_page_100, pos = (1120, 575), size = image.GetSize() )
+        
+        image = wx.Image("img/number_0.png")
+        kaede_page_10 = image.ConvertToBitmap()
+        self.kaede_page_10 = wx.StaticBitmap(self, -1, kaede_page_10, pos = (1135, 575), size = image.GetSize() )
+        
+        image = wx.Image("img/number_1.png")
+        kaede_page_1 = image.ConvertToBitmap()
+        self.kaede_page_1 = wx.StaticBitmap(self, -1, kaede_page_1, pos = (1150, 575), size = image.GetSize() )
+        
+        image = wx.Image("img/number_0.png")
+        kaede_page_down_100 = image.ConvertToBitmap()
+        self.kaede_page_down_100 = wx.StaticBitmap(self, -1, kaede_page_down_100, pos = (1120, 605), size = image.GetSize() )
+        
+        image = wx.Image("img/number_0.png")
+        kaede_page_down_10 = image.ConvertToBitmap()
+        self.kaede_page_down_10 = wx.StaticBitmap(self, -1, kaede_page_down_10, pos = (1135, 605), size = image.GetSize() )
+        
+        image = wx.Image("img/number_1.png")
+        kaede_page_down_1 = image.ConvertToBitmap()
+        self.kaede_page_down_1 = wx.StaticBitmap(self, -1, kaede_page_down_1, pos = (1150, 605), size = image.GetSize() )
+        
+        
+        image = wx.Image("img/number_0.png")
+        kurumi_page_100 = image.ConvertToBitmap()
+        self.kurumi_page_100 = wx.StaticBitmap(self, -1, kurumi_page_100, pos = (1200, 575), size = image.GetSize() )
+        
+        image = wx.Image("img/number_0.png")
+        kurumi_page_10 = image.ConvertToBitmap()
+        self.kurumi_page_10 = wx.StaticBitmap(self, -1, kurumi_page_10, pos = (1215, 575), size = image.GetSize() )
+        
+        image = wx.Image("img/number_1.png")
+        kurumi_page_1 = image.ConvertToBitmap()
+        self.kurumi_page_1 = wx.StaticBitmap(self, -1, kurumi_page_1, pos = (1230, 575), size = image.GetSize() )
+        
+        image = wx.Image("img/number_0.png")
+        kurumi_page_down_100 = image.ConvertToBitmap()
+        self.kurumi_page_down_100 = wx.StaticBitmap(self, -1, kurumi_page_down_100, pos = (1200, 605), size = image.GetSize() )
+        
+        image = wx.Image("img/number_0.png")
+        kurumi_page_down_10 = image.ConvertToBitmap()
+        self.kurumi_page_down_10 = wx.StaticBitmap(self, -1, kurumi_page_down_10, pos = (1215, 605), size = image.GetSize() )
+        
+        image = wx.Image("img/number_1.png")
+        kurumi_page_down_1 = image.ConvertToBitmap()
+        self.kurumi_page_down_1 = wx.StaticBitmap(self, -1, kurumi_page_down_1, pos = (1230, 605), size = image.GetSize() )
+        
+        
+    
+        
+        
+        #パス
         image = wx.Image("img/path_null.png")
         yukari_path_null = image.ConvertToBitmap()
         self.yukari_path_null = wx.StaticBitmap(self, -1, yukari_path_null, pos = ( 870, 420 ), size = image.GetSize() )
@@ -324,6 +432,36 @@ class MyApp(wx.Frame):
         global path_anime_cnt_kaede
         global path_anime_cnt_kurumi
         
+        #ページ番号
+        global yukari_page_1
+        global yukari_page_10
+        global yukari_page_100
+        global yukari_page_down_1
+        global yukari_page_down_10
+        global yukari_page_down_100
+        global kaede_page_1
+        global kaede_page_10
+        global kaede_page_100
+        global kaede_page_down_1
+        global kaede_page_down_10
+        global kaede_page_down_100
+        global kurumi_page_1
+        global kurumi_page_10
+        global kurumi_page_100
+        global kurumi_page_down_1
+        global kurumi_page_down_10
+        global kurumi_page_down_100
+        
+        #ページ番号(分母)
+        global page_yukari
+        global page_kaede
+        global page_kurumi
+
+        #ページ番号(分子)
+        global draw_page_yukari
+        global draw_page_kaede
+        global draw_page_kurumi
+        
 
 
         #ターミナル文字表示
@@ -385,6 +523,28 @@ class MyApp(wx.Frame):
         self.yukari_path.SetBitmap(wx.Bitmap("img/path_" + str(path_anime_cnt_yukari) + ".png"))
         self.kaede_path.SetBitmap(wx.Bitmap("img/path_" + str(path_anime_cnt_kaede) + ".png"))
         self.kurumi_path.SetBitmap(wx.Bitmap("img/path_" + str(path_anime_cnt_kurumi) + ".png"))
+        
+        #ページ番号
+        self.yukari_page_100.SetBitmap(wx.Bitmap("img/number_" + str(int(draw_page_yukari / 100)) + ".png"))
+        self.yukari_page_10.SetBitmap(wx.Bitmap("img/number_" + str(int(draw_page_yukari / 10)) + ".png"))
+        self.yukari_page_1.SetBitmap(wx.Bitmap("img/number_" + str(int(draw_page_yukari / 1)) + ".png"))
+        self.yukari_page_down_100.SetBitmap(wx.Bitmap("img/number_" + str(int(page_yukari / 100)) + ".png"))
+        self.yukari_page_down_10.SetBitmap(wx.Bitmap("img/number_" + str(int(page_yukari / 10)) + ".png"))
+        self.yukari_page_down_1.SetBitmap(wx.Bitmap("img/number_" + str(int(page_yukari / 1)) + ".png"))
+        
+        self.kaede_page_100.SetBitmap(wx.Bitmap("img/number_" + str(int(draw_page_kaede / 100)) + ".png"))
+        self.kaede_page_10.SetBitmap(wx.Bitmap("img/number_" + str(int(draw_page_kaede / 10)) + ".png"))
+        self.kaede_page_1.SetBitmap(wx.Bitmap("img/number_" + str(int(draw_page_kaede / 1)) + ".png"))
+        self.kaede_page_down_100.SetBitmap(wx.Bitmap("img/number_" + str(int(page_kaede / 100)) + ".png"))
+        self.kaede_page_down_10.SetBitmap(wx.Bitmap("img/number_" + str(int(page_kaede / 10)) + ".png"))
+        self.kaede_page_down_1.SetBitmap(wx.Bitmap("img/number_" + str(int(page_kaede / 1)) + ".png"))
+        
+        self.kurumi_page_100.SetBitmap(wx.Bitmap("img/number_" + str(int(draw_page_kurumi / 100)) + ".png"))
+        self.kurumi_page_10.SetBitmap(wx.Bitmap("img/number_" + str(int(draw_page_kurumi / 10)) + ".png"))
+        self.kurumi_page_1.SetBitmap(wx.Bitmap("img/number_" + str(int(draw_page_kurumi / 1)) + ".png"))
+        self.kurumi_page_down_100.SetBitmap(wx.Bitmap("img/number_" + str(int(page_kurumi / 100)) + ".png"))
+        self.kurumi_page_down_10.SetBitmap(wx.Bitmap("img/number_" + str(int(page_kurumi / 10)) + ".png"))
+        self.kurumi_page_down_1.SetBitmap(wx.Bitmap("img/number_" + str(int(page_kurumi / 1)) + ".png"))
 
 
 
@@ -448,6 +608,8 @@ class MyApp(wx.Frame):
         global path_anime_cnt_yukari
         global path_anime_cnt_kaede
         global path_anime_cnt_kurumi
+
+        
 
         #インプットリストに追加
         inp.append( self.TextBox.GetValue() )
